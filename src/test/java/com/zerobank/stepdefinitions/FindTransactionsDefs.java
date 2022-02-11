@@ -32,6 +32,9 @@ public class FindTransactionsDefs {
     @And("clicks search")
     public void clicksSearch() {
         findTransactionPage.findButton.click();
+        BrowserUtils.waitFor(2);
+        findTransactionPage.fromDate.clear();
+        findTransactionPage.toDate.clear();
         
     }
 
@@ -41,6 +44,7 @@ public class FindTransactionsDefs {
         List<String> actualElements = BrowserUtils.getElementsText(findTransactionPage.dates);
         for (String str : actualElements) {
             Assert.assertTrue(str.compareTo(fromDate) >= 0 && str.compareTo(toDate) <= 0);
+
 
 
         }
@@ -54,13 +58,12 @@ public class FindTransactionsDefs {
         
     }
 
-    @When("the user enters date from {string} to {string}")
-    public void theUserEntersDateFromTo(String arg0, String arg1) {
-        
-    }
+
 
     @And("the results table should only not contain transactions dated {string}")
-    public void theResultsTableShouldOnlyNotContainTransactionsDated(String arg0) {
+    public void theResultsTableShouldOnlyNotContainTransactionsDated(String date) {
+        List<String> actualElements = BrowserUtils.getElementsText(findTransactionPage.dates);
+        Assert.assertFalse(actualElements.contains(date));
     }
 }
 
