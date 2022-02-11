@@ -35,6 +35,7 @@ public class FindTransactionsDefs {
         BrowserUtils.waitFor(2);
         findTransactionPage.fromDate.clear();
         findTransactionPage.toDate.clear();
+        findTransactionPage.descriptionInput.clear();
         
     }
 
@@ -57,13 +58,31 @@ public class FindTransactionsDefs {
         Assert.assertEquals(expectedDates,actualDates);
         
     }
-
-
-
     @And("the results table should only not contain transactions dated {string}")
     public void theResultsTableShouldOnlyNotContainTransactionsDated(String date) {
         List<String> actualElements = BrowserUtils.getElementsText(findTransactionPage.dates);
         Assert.assertFalse(actualElements.contains(date));
+    }
+
+    @When("the user enters description {string}")
+    public void theUserEntersDescription(String description) {
+        BrowserUtils.waitFor(2);
+        findTransactionPage.descriptionInput.sendKeys(description);
+        
+    }
+
+    @Then("results table should only show descriptions containing {string}")
+    public void resultsTableShouldOnlyShowDescriptionsContaining(String expectedDescription) {
+        List<String> actualDescriptions = BrowserUtils.getElementsText(findTransactionPage.descriptionsColumn);
+        for(String descriptions:actualDescriptions){
+        Assert.assertTrue(descriptions.contains(expectedDescription));
+    }
+    }
+
+    @But("results table should not show descriptions containing {string}")
+    public void resultsTableShouldNotShowDescriptionsContaining(String description) {
+        List<String> actualDescriptions = BrowserUtils.getElementsText(findTransactionPage.descriptionsColumn);
+        Assert.assertFalse(actualDescriptions.contains(description));
     }
 }
 
